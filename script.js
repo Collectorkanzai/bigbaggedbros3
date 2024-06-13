@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 canvas.add(imgInstance);
                 baseImage = imgInstance;
 
-                // Add the first muscular arm image as an overlay
+                // Add BBB Arms 1 as an overlay
                 fabric.Image.fromURL('images/muscular-arm1.png', function(img) {
                     img.scale(0.5);
                     img.set({
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     arm1 = img;
                 });
 
-                // Add the second muscular arm image as an overlay
+                // Add BBB Arms 2 as an overlay
                 fabric.Image.fromURL('images/muscular-arm2.png', function(img) {
                     img.scale(0.5);
                     img.set({

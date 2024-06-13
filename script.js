@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const upload = document.getElementById('upload');
     const saveButton = document.getElementById('save');
     let baseImage = null;
+    let arm1 = null;
+    let arm2 = null;
 
     // Function to handle image upload
     upload.addEventListener('change', function(event) {
@@ -31,9 +33,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     img.set({
                         left: 100,
                         top: 100,
-                        selectable: true
+                        selectable: false,
+                        opacity: 0  // Initially hidden
                     });
                     canvas.add(img);
+                    arm1 = img;
                 });
 
                 // Add the second muscular arm image as an overlay
@@ -42,15 +46,27 @@ document.addEventListener('DOMContentLoaded', function() {
                     img.set({
                         left: 200,
                         top: 100,
-                        selectable: true
+                        selectable: false,
+                        opacity: 0  // Initially hidden
                     });
                     canvas.add(img);
+                    arm2 = img;
                 });
             }
         }
         
         reader.readAsDataURL(file);
     });
+
+    // Function to toggle arm image visibility
+    function toggleArm(armId) {
+        if (armId === 'arm1') {
+            arm1.opacity = (arm1.opacity === 0 ? 1 : 0);  // Toggle opacity
+        } else if (armId === 'arm2') {
+            arm2.opacity = (arm2.opacity === 0 ? 1 : 0);  // Toggle opacity
+        }
+        canvas.renderAll();  // Render canvas to apply changes
+    }
 
     // Function to save the meme
     saveButton.addEventListener('click', function() {

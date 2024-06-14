@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const upload = document.getElementById('upload');
     const saveButton = document.getElementById('save');
     let baseImage = null;
-    let arm2 = null; // Use arm2 for png 2
+    let logoeyes = null;
 
     // Function to handle image upload
     upload.addEventListener('change', function(event) {
@@ -15,8 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
             imgElement.src = f.target.result;
             
             imgElement.onload = function() {
-                const maxImageWidth = 400; // Adjust this value as needed
-                const maxImageHeight = 400; // Adjust this value as needed
+                const maxImageWidth = 800; // Adjust this value as needed
+                const maxImageHeight = 600; // Adjust this value as needed
 
                 // Calculate scaled dimensions to fit within canvas
                 let scaleX = 1;
@@ -43,17 +43,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 canvas.add(imgInstance);
                 baseImage = imgInstance;
 
-                // Add BBB Arms 2 as an overlay
-                fabric.Image.fromURL('images/muscular-arm2.png', function(img) {
+                // Add logoeyes as an overlay
+                fabric.Image.fromURL('images/logoeyes.png', function(img) {
                     img.scale(0.5 * scale);
                     img.set({
                         left: 100 * scale,
                         top: 100 * scale,
-                        selectable: true, // Allow selection
-                        opacity: 1  // Ensure opacity is 1
+                        selectable: true // Allow selection
                     });
                     canvas.add(img);
-                    arm2 = img;
+                    logoeyes = img;
                 });
             }
         }
@@ -63,63 +62,49 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to save the meme
     saveButton.addEventListener('click', function() {
-        canvas.discardActiveObject(); // Deselect any active objects
-        
-        // Generate image URL from canvas
         const dataURL = canvas.toDataURL({
             format: 'png',
             quality: 1
         });
 
-        // Create a temporary link element
         const link = document.createElement('a');
         link.href = dataURL;
-        link.download = 'meme.png'; // Set the download attribute
-        document.body.appendChild(link); // Append the link to the body
-        link.click(); // Programmatically click the link to trigger download
-        document.body.removeChild(link); // Clean up: remove the link from the body
+        link.download = 'meme.png';
+        link.click();
     });
 
-    // Event listener to allow manipulation of arm
+    // Enable object manipulation
     canvas.on('object:selected', function(e) {
         const obj = e.target;
-        if (obj === arm2) {
+        if (obj === logoeyes) {
             obj.set({
-                borderColor: '#FF0000', // Optional: Highlight selected arm
-                cornerColor: '#FF0000', // Optional: Highlight selected arm
-                cornerStrokeColor: '#FF0000' // Optional: Highlight selected arm
+                borderColor: '#FF0000',
+                cornerColor: '#FF0000',
+                cornerStrokeColor: '#FF0000'
             });
         }
     });
 
     canvas.on('selection:cleared', function(e) {
         const obj = e.target;
-        if (obj === arm2) {
-            arm2.set({
-                borderColor: 'transparent', // Reset border color
-                cornerColor: 'transparent', // Reset corner color
-                cornerStrokeColor: 'transparent' // Reset corner stroke color
+        if (obj === logoeyes) {
+            logoeyes.set({
+                borderColor: 'transparent',
+                cornerColor: 'transparent',
+                cornerStrokeColor: 'transparent'
             });
         }
     });
 
     canvas.on('object:scaling', function(e) {
         const obj = e.target;
-        obj.setCoords(); // Update object's coordinates
-
-        // Limit scaling to avoid arms going out of image bounds
-        if (obj.scaleX > obj.maxScaleFactor) {
-            obj.scaleX = obj.maxScaleFactor;
-        }
-        if (obj.scaleY > obj.maxScaleFactor) {
-            obj.scaleY = obj.maxScaleFactor;
-        }
+        obj.setCoords();
     });
 
     canvas.on('selection:updated', function(e) {
         const obj = e.target;
-        if (obj === arm2) {
-            arm2 = obj; // Update arm2 reference
+        if (obj === logoeyes) {
+            logoeyes = obj;
         }
     });
 
